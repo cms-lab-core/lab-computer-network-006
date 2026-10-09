@@ -1,0 +1,45 @@
+apiVersion: c9s.run/v1alpha1
+kind: Topology
+metadata:
+  name: $NAME
+  namespace: $NAME
+spec:
+  expose:
+    exposeType: ClusterIP
+  naming: non-prefixed
+  definition:
+    containerlab: |-
+      name: $NAME
+      topology:
+        defaults:
+          labels:
+            flow_direction: LR
+        groups:
+          hosts:
+            kind: linux
+            image: ghcr.io/nicolaka/netshoot:v0.16
+        nodes:
+          pc1:
+            group: hosts
+            labels:
+              flow_icon: pc
+            exec:
+              - /bin/sh -c "adduser -D -s /bin/sh admin 2>/dev/null || true"
+              - /bin/sh -c "echo admin:admin | chpasswd"
+              - ssh-keygen -A
+              - mkdir -p /run/sshd
+              - /bin/sh -c "echo PasswordAuthentication=yes >> /etc/ssh/sshd_config"
+              - /usr/sbin/sshd
+          pc2:
+            group: hosts
+            labels:
+              flow_icon: pc
+            exec:
+              - /bin/sh -c "adduser -D -s /bin/sh admin 2>/dev/null || true"
+              - /bin/sh -c "echo admin:admin | chpasswd"
+              - ssh-keygen -A
+              - mkdir -p /run/sshd
+              - /bin/sh -c "echo PasswordAuthentication=yes >> /etc/ssh/sshd_config"
+              - /usr/sbin/sshd
+        links:
+          - endpoints: ["pc1:eth1", "pc2:eth1"]

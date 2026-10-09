@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+<title id="title">Один Ethernet-линк: /24 и /25 изменяют выбор connected route</title>
+<desc id="desc">В первом случае pc1 и pc2 находятся в одной IPv4 /24, Linux отправляет трафик напрямую через eth1. Во втором случае pc1 с /25 больше не считает адрес pc2 локальным, хотя pc2 с /24 считает pc1 локальным.</desc>
+<rect width="1600" height="760" fill="#ffffff"/>
+<style>
+  text {font-family:DejaVu Sans,Arial,sans-serif;fill:#182841}
+  .title{font-size:33px;font-weight:700}.sub{font-size:19px;fill:#63738a}
+  .panel{fill:#f8faff;stroke:#cad5ed;stroke-width:2}.panel2{fill:#fff8f4;stroke:#ead3c2;stroke-width:2}
+  .pc{fill:#fff;stroke:#5075b8;stroke-width:2.4}.head{font-size:23px;font-weight:700}
+  .mono{font-family:DejaVu Sans Mono,monospace;font-size:17px}.small{font-size:18px;fill:#526278}
+  .green{stroke:#168568;stroke-width:7;stroke-linecap:round}.orange{stroke:#cf7839;stroke-width:7;stroke-linecap:round;stroke-dasharray:12 10}
+  .ok{fill:#e2f4ed;stroke:#a9dbc7}.warn{fill:#fff0de;stroke:#f0cba2}
+  .phase1{animation:fadeOne 9s ease-in-out infinite}.phase2{animation:fadeTwo 9s ease-in-out infinite}
+  @keyframes fadeOne{0%,40%,100%{opacity:1}50%,88%{opacity:.45}}
+  @keyframes fadeTwo{0%,40%,100%{opacity:.45}50%,88%{opacity:1}}
+</style>
+<text class="title" x="800" y="55" text-anchor="middle">Один провод. Две разные таблицы маршрутов.</text>
+<text class="sub" x="800" y="93" text-anchor="middle">На pc1 /24 → /25 меняет connected network. MAC и физический eth1 от этого не исчезают.</text>
+
+<rect class="panel" x="75" y="135" width="1450" height="243" rx="23"/>
+<text class="head" x="130" y="181">Случай A · оба хоста /24</text>
+<g class="phase1">
+ <rect class="pc" x="155" y="210" width="380" height="103" rx="18"/>
+ <text class="mono" x="345" y="245" text-anchor="middle">pc1 · 192.168.50.10/24</text>
+ <text class="small" x="345" y="283" text-anchor="middle">connected 192.168.50.0/24</text>
+ <rect class="pc" x="1065" y="210" width="380" height="103" rx="18"/>
+ <text class="mono" x="1255" y="245" text-anchor="middle">pc2 · 192.168.50.130/24</text>
+ <text class="small" x="1255" y="283" text-anchor="middle">connected 192.168.50.0/24</text>
+ <line class="green" x1="550" y1="260" x2="1050" y2="260"/>
+ <polygon points="1050,260 1023,249 1023,271" fill="#168568"/>
+ <text class="mono" x="800" y="242" text-anchor="middle">direct eth1 · no via</text>
+</g>
+<rect class="ok" x="492" y="324" width="616" height="40" rx="12"/>
+<text class="small" x="800" y="351" text-anchor="middle">.130 ∈ 192.168.50.0/24 → ICMP может идти по eth1</text>
+
+<rect class="panel2" x="75" y="410" width="1450" height="270" rx="23"/>
+<text class="head" x="130" y="459">Случай B · /25 изменился только у pc1</text>
+<g class="phase2">
+ <rect class="pc" x="155" y="485" width="380" height="113" rx="18"/>
+ <text class="mono" x="345" y="521" text-anchor="middle">pc1 · 192.168.50.10/25</text>
+ <text class="small" x="345" y="558" text-anchor="middle">connected 192.168.50.0/25</text>
+ <rect class="pc" x="1065" y="485" width="380" height="113" rx="18"/>
+ <text class="mono" x="1255" y="521" text-anchor="middle">pc2 · 192.168.50.130/24</text>
+ <text class="small" x="1255" y="558" text-anchor="middle">connected 192.168.50.0/24</text>
+ <line class="orange" x1="550" y1="536" x2="1050" y2="536"/>
+ <text class="mono" x="800" y="515" text-anchor="middle">L2 still connected</text>
+ <rect class="warn" x="515" y="573" width="570" height="46" rx="12"/>
+ <text class="small" x="800" y="603" text-anchor="middle">pc1: .130 уже не on-link по eth1</text>
+</g>
+<text class="small" x="800" y="649" text-anchor="middle">pc2 по-прежнему считает .10 локальным: возникает асимметричное L3-решение</text>
+<text class="sub" x="800" y="727" text-anchor="middle">Management default может существовать отдельно через eth0 — это не маршрут учебной сети.</text>
+</svg>
