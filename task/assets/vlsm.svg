@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+<title id="title">VLSM: корректное разбиение 192.168.60.0/24 на подсети по числу устройств</title>
+<desc id="desc">Задан диапазон из 256 адресов. Сегмент A на 70 хостов получает .0/25, сегмент B на 35 — .128/26, сегмент C на 14 — .192/28; оставшиеся 48 адресов свободны.</desc>
+<rect width="1600" height="760" fill="#ffffff"/>
+<style>
+text{font-family:DejaVu Sans,Arial,sans-serif;fill:#1d2a3d}
+.title{font-size:35px;font-weight:700}.sub{font-size:20px;fill:#5b6d84}
+.net{font-family:DejaVu Sans Mono,monospace;font-size:21px}
+.item{font-size:23px;font-weight:700}.small{font-size:19px;fill:#526377}
+.blue{fill:#d9e6ff;stroke:#315fc2;stroke-width:2}
+.green{fill:#d8f4e6;stroke:#308765;stroke-width:2}
+.orange{fill:#ffe5cf;stroke:#b86930;stroke-width:2}
+.free{fill:#f2f4f8;stroke:#9aa8b8;stroke-width:2}
+.card{fill:#fafbfd;stroke:#cbd4e1;stroke-width:2}
+</style>
+<text class="title" x="800" y="58" text-anchor="middle">VLSM · 192.168.60.0/24 = 256 IPv4-адресов</text>
+<text class="sub" x="800" y="96" text-anchor="middle">Размещаем самые большие потребности первыми, соблюдаем сетевые границы и не пересекаем подсети.</text>
+<text class="net" x="155" y="191">.0</text>
+<text class="net" x="755" y="191">.128</text>
+<text class="net" x="1055" y="191">.192</text>
+<text class="net" x="1142" y="191">.208</text>
+<text class="net" x="1440" y="191" text-anchor="end">.255</text>
+<rect class="blue" x="155" y="218" width="600" height="95"/>
+<rect class="green" x="755" y="218" width="300" height="95"/>
+<rect class="orange" x="1055" y="218" width="75" height="95"/>
+<rect class="free" x="1130" y="218" width="300" height="95"/>
+<text class="item" x="455" y="274" text-anchor="middle">A · /25 · 128 addresses</text>
+<text class="item" x="905" y="274" text-anchor="middle">B · /26</text>
+<text class="small" x="1093" y="266" text-anchor="middle">C</text>
+<text class="item" x="1280" y="274" text-anchor="middle">Free</text>
+<text class="small" x="800" y="350" text-anchor="middle">Ширина блока пропорциональна количеству адресов. Доступные хостовые адреса = размер блока − 2.</text>
+
+<rect class="card" x="100" y="390" width="670" height="120" rx="16"/>
+<rect class="blue" x="120" y="413" width="14" height="74" rx="5"/>
+<text class="item" x="160" y="435">A · 70 устройств</text>
+<text class="net" x="160" y="478">192.168.60.0/25 · 126 usable</text>
+
+<rect class="card" x="835" y="390" width="665" height="120" rx="16"/>
+<rect class="green" x="855" y="413" width="14" height="74" rx="5"/>
+<text class="item" x="895" y="435">B · 35 устройств</text>
+<text class="net" x="895" y="478">192.168.60.128/26 · 62 usable</text>
+
+<rect class="card" x="100" y="535" width="670" height="120" rx="16"/>
+<rect class="orange" x="120" y="558" width="14" height="74" rx="5"/>
+<text class="item" x="160" y="581">C · 14 устройств</text>
+<text class="net" x="160" y="624">192.168.60.192/28 · 14 usable</text>
+
+<rect class="card" x="835" y="535" width="665" height="120" rx="16"/>
+<rect class="free" x="855" y="558" width="14" height="74" rx="5"/>
+<text class="item" x="895" y="581">Остаётся свободно</text>
+<text class="net" x="895" y="624">.208–.255 · 48 addresses</text>
+<text class="sub" x="800" y="714" text-anchor="middle">Не меняем topology: VLSM здесь — отдельный расчёт, проверяемый через Python ipaddress.</text>
+</svg>
